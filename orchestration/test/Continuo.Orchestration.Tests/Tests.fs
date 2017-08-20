@@ -1,8 +1,9 @@
 module Tests
 
 open System
-open Xunit
+open FsCheck.Xunit
+open Swensen.Unquote
 
-[<Fact>]
+[<Property>]
 let ``My test`` () =
-    Assert.True(true)
+    2 + 1 =! 3
