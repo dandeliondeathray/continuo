@@ -1,0 +1,10 @@
+authtoken: 2GKfs1LTctLKdf644p2hD_2c77wH9ByVgxVS7dPk5vc
+console_ui: false
+web_addr: 0.0.0.0:4040
+log: stdout
+log_level: debug
+
+tunnels:
+  orchestration:
+    proto: https
+    addr: orchestration:80
