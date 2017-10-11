@@ -7,7 +7,7 @@ WORKDIR /build
 COPY orchestration.fsproj .
 RUN dotnet restore 
 
-COPY *.fs /
+COPY *.fs ./
 
 RUN dotnet publish -c Release -o /build/out
 

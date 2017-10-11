@@ -2,3 +2,19 @@ version: '3'
 services:
   orchestration:
     build: ./orchestration
+    ports:
+      - 5000:80
+    command: '80'
+  tunnel-opener:
+    build: ./tunnel-opener
+    links:
+      - ngrok
+    command: ['-u', 'http://orchestration/tunnel', '-n', 'orchestration']
+  ngrok:
+    build: ./ngrok
+    links:
+      - orchestration
+    ports:
+      - 4040
+    command:
+      - orchestration

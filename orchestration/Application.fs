@@ -1,6 +1,6 @@
 module Orchestration.Application
 
-let registerTunnel tunnel =async {
+let openTunnel tunnel = async {
     printfn "Registered tunnel endpoint: %s" tunnel
     return ()
 }

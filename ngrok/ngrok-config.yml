@@ -6,5 +6,5 @@ log_level: debug
 
 tunnels:
   orchestration:
-    proto: https
+    proto: http
     addr: orchestration:80

@@ -6,17 +6,20 @@ open Giraffe.Tasks
 open Giraffe.HttpContextExtensions
 open Microsoft.AspNetCore.Http
 
-let putTunnel next (ctx : HttpContext) = 
+let openTunnel next (ctx : HttpContext) = 
     task {
         let! tunnel = ctx.BindModel<string>()
 
-        do! Application.registerTunnel tunnel
+        do! Application.openTunnel tunnel
 
-        return! json "" next ctx
+        return! setStatusCode 204 next ctx
     }
 
 let root<'a> =
     choose [
-        PUT >=> route "/tunnel" >=> putTunnel
+        route "/tunnel" >=> choose [
+            POST >=> openTunnel
+            setStatusCode 405 >=> text "Method not supported"
+        ]
         setStatusCode 404 >=> text "Not Found"
     ]
