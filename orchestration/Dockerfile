@@ -1,24 +1,20 @@
 # Multistage part 1: Builder
 FROM microsoft/dotnet:2-sdk AS builder
-RUN dotnet --version
+EXPOSE 80
+
 WORKDIR /build
 
-COPY src/Continuo.Orchestration/Continuo.Orchestration.fsproj ./src/Continuo.Orchestration/
-COPY test/Continuo.Orchestration.Tests/Continuo.Orchestration.Tests.fsproj ./test/Continuo.Orchestration.Tests/
-COPY *.sln .
+COPY orchestration.fsproj .
 RUN dotnet restore 
 
-COPY src/Continuo.Orchestration/*.fs src/Continuo.Orchestration/
-COPY test/Continuo.Orchestration.Tests/*.fs test/Continuo.Orchestration.Tests/
-RUN dotnet test test/Continuo.Orchestration.Tests
+COPY *.fs /
 
-RUN dotnet publish src/Continuo.Orchestration -c Release -o /build/out
+RUN dotnet publish -c Release -o /build/out
 
 # Multistage part 2: Runtime
-FROM microsoft/dotnet:2-runtime
+FROM microsoft/dotnet:2.0.0-runtime-jessie
 
 WORKDIR /app
 
 COPY --from=builder /build/out .
-
-CMD ["dotnet", "Continuo.Orchestration.dll"]
+ENTRYPOINT ["dotnet", "orchestration.dll"]
